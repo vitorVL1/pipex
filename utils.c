@@ -6,7 +6,7 @@
 /*   By: vlima <vlima@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/13 14:15:58 by vlima             #+#    #+#             */
-/*   Updated: 2023/04/14 11:02:06 by vlima            ###   ########.fr       */
+/*   Updated: 2023/06/26 16:50:20 by vlima            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,9 +46,10 @@ static char	*word_dup(const char *s, int start, int end)
 	return (word);
 }
 
+
 char	**ft_split(char const *s, char c)
 {
-	size_t	i;
+	int	i;
 	size_t	j;
 	int		index;
 	char	**split;
@@ -74,15 +75,16 @@ char	**ft_split(char const *s, char c)
 	return (split);
 }
 
+
 char	*ft_strjoin(char const *s1, char const *s2)
 {
-	size_t	i;
-	size_t	j;
 	char	*str;
+	int		i;
+	int		j;
 
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	j = 0;
 	i = 0;
+	str = (char *)malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (!str)
 		return (NULL);
 	while (s1[i] != '\0')
@@ -102,31 +104,26 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	return (str);
 }
 
-char	*ft_substr(char const *s, unsigned int start, size_t len)
+char	*ft_strnstr(const char *big, const char *little, size_t len)
 {
+	size_t	j;
 	size_t	i;
-	char	*str;
 
+	j = 0;
 	i = 0;
-	if (!s)
+	if (!big && !little)
 		return (NULL);
-	if (start > ft_strlen(s) || len == 0)
+	if (!little[0])
+		return ((char *)big);
+	while (big[i] && i < len)
 	{
-		str = malloc(1);
-		*str = '\0';
-		return (str);
-	}
-	if (ft_strlen(s) - start >= len)
-		str = (char *)malloc(sizeof(char) * (len + 1));
-	else
-		str = (char *)malloc(sizeof(char) * (ft_strlen(s) - start + 1));
-	if (!str)
-		return (0);
-	while (s[start] && i < len && start < ft_strlen(s))
-	{
-		str[i] = s[start++];
+		j = 0;
+		while (big[i + j] && little[j] && i + j < len && big[i
+				+ j] == little[j])
+			j++;
+		if (!little[j])
+			return ((char *)(big + i));
 		i++;
 	}
-	str[i] = '\0';
-	return (str);
+	return (NULL);
 }
